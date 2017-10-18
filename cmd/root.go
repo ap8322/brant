@@ -23,9 +23,13 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
+	"github.com/ap8322/brant/config"
 	"github.com/spf13/cobra"
 )
+
+var configFile string
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
@@ -59,5 +63,23 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	cobra.OnInitialize(initConfig)
+}
+
+func initConfig() {
+	if configFile == "" {
+		dir, err := config.GetDefaultConfigDir()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%v", err)
+			os.Exit(1)
+		}
+		configFile = filepath.Join(dir, "config.toml")
+	}
+
+	if err := config.Conf.Load(configFile); err != nil {
+		fmt.Fprintf(os.Stderr, "%v", err)
+		os.Exit(1)
+	}
 }
