@@ -35,6 +35,14 @@ type GithubConfig struct {
 func (conf *Config) Load(file string) error {
 	_, err := os.Stat(file)
 
+	if err == nil {
+		_, err := toml.DecodeFile(file, conf)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
 	if !os.IsNotExist(err) {
 		return err
 	}
@@ -49,7 +57,7 @@ func (conf *Config) Load(file string) error {
 	if conf.Core.Editor == "" && runtime.GOOS != "windows" {
 		conf.Core.Editor = "vim"
 	}
-	conf.Core.SelectCmd = "peco"
+	conf.Core.SelectCmd = "fzf"
 
 	return toml.NewEncoder(f).Encode(conf)
 }
