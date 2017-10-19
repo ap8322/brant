@@ -19,10 +19,12 @@ type Config struct {
 
 type CoreConfig struct {
 	Editor string `toml:"editor"`
+	TicketCache string `toml:"ticketcache"`
 	SelectCmd string `toml:"selectcmd"`
 }
 
 type JiraConfig struct {
+	Host string `toml:"host"`
 	UserName string `toml:"username"`
 	Password string `toml:"password"`
 	Jql string `toml:"jql"`
@@ -40,6 +42,7 @@ func (conf *Config) Load(file string) error {
 		if err != nil {
 			return err
 		}
+		conf.Core.TicketCache = expandPath(conf.Core.TicketCache)
 		return nil
 	}
 
@@ -48,7 +51,13 @@ func (conf *Config) Load(file string) error {
 	}
 
 	f, err := os.Create(file)
+	if err != nil {
+		return err
+	}
 
+	dir, _ := GetDefaultConfigDir()
+	conf.Core.TicketCache = filepath.Join(dir, "tickets.toml")
+	_, err = os.Create(conf.Core.TicketCache)
 	if err != nil {
 		return err
 	}
@@ -77,4 +86,15 @@ func GetDefaultConfigDir() (dir string, err error) {
 		return "", fmt.Errorf("cannot create directory: %v", err)
 	}
 	return dir, nil
+}
+
+func expandPath(s string) string {
+	if len(s) >= 2 && s[0] == '~' && os.IsPathSeparator(s[1]) {
+		if runtime.GOOS == "windows" {
+			s = filepath.Join(os.Getenv("USERPROFILE"), s[2:])
+		} else {
+			s = filepath.Join(os.Getenv("HOME"), s[2:])
+		}
+	}
+	return os.Expand(s, os.Getenv)
 }
