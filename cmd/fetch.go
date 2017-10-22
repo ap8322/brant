@@ -36,8 +36,8 @@ import (
 // fetchCmd represents the fetch command
 var fetchCmd = &cobra.Command{
 	Use:   "fetch",
-	Short: "fetch tiket list and cache them.",
-	Long:  "fetch tiket list and cache them.",
+	Short: "Fetch ticket list and cache them",
+	Long:  "Fetch ticket list and cache them",
 	RunE:  fetch,
 }
 

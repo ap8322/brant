@@ -37,7 +37,7 @@ import (
 var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "Create ticket ID prefix branch",
-	Long:  `create ticket ID prefix branch`,
+	Long:  `Create ticket ID prefix branch (default filtering tool: fzf)`,
 	RunE:  create,
 }
 

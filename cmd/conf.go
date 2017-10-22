@@ -29,8 +29,8 @@ import (
 var confCmd = &cobra.Command{
 	Use:   "conf",
 	Short: "Edit config file",
-	Long: "Edit config file",
-	RunE: conf,
+	Long:  "Edit config file (default: opened by vim)",
+	RunE:  conf,
 }
 
 func conf(cmd *cobra.Command, args []string) (err error) {
