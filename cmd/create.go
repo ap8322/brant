@@ -57,7 +57,7 @@ func create(cmd *cobra.Command, args []string) error {
 
 	var buf bytes.Buffer
 	if err := run(config.Conf.Core.SelectCmd, strings.NewReader(list), &buf); err != nil {
-		return err
+		return nil
 	}
 
 	line := buf.String()
@@ -66,23 +66,20 @@ func create(cmd *cobra.Command, args []string) error {
 
 	selectedId := strings.Split(line, sep)[0]
 
-	if len(args) != 0 {
-		hoge := args[0]
-		fmt.Println(hoge)
-	}
-
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print(color.GreenString("branch name? > "))
-	branch_name, _ := reader.ReadString('\n')
+	branchName, _ := reader.ReadString('\n')
 
-	command := "git checkout -b " + selectedId + "_" + strings.TrimSpace(branch_name)
+	command := "git checkout -b " + selectedId + "_" + strings.TrimSpace(branchName)
 
 	if len(args) != 0 {
-		command = command + " " + strings.TrimSpace(args[0])
+		baseBranch := strings.TrimSpace(args[0])
+		command = command + " " + baseBranch
 	}
 
 	if err := run(command, os.Stdin, os.Stdout); err != nil {
-		return err
+		fmt.Println("Fatal: Git or anything error. Please read above error message.")
+		return nil
 	}
 
 	return nil
