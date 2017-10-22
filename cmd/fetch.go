@@ -22,10 +22,14 @@ package cmd
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/andygrunwald/go-jira"
 	"github.com/ap8322/brant/config"
 	"github.com/ap8322/brant/ticket"
+	"github.com/briandowns/spinner"
+	"gopkg.in/kyokomi/emoji.v1"
+
 	"github.com/spf13/cobra"
 )
 
@@ -38,7 +42,9 @@ var fetchCmd = &cobra.Command{
 }
 
 func fetch(cmd *cobra.Command, args []string) (err error) {
-	fmt.Println("fetch tickets...")
+	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
+	s.Suffix = " fetch ticket list..."
+	s.Start()
 
 	jiraClient, err := jira.NewClient(nil, config.Conf.Jira.Host)
 	if err != nil {
@@ -60,13 +66,14 @@ func fetch(cmd *cobra.Command, args []string) (err error) {
 		return err
 	}
 
+	s.Stop()
+
 	var tikets ticket.Tickets
 
 	for _, issue := range issues {
 		ticket := ticket.Ticket{
-			ID:      issue.Key,
-			Title:   issue.Fields.Summary,
-			Display: issue.Key + " " + issue.Fields.Summary,
+			ID:    issue.Key,
+			Title: issue.Fields.Summary,
 		}
 
 		tikets.Tickets = append(tikets.Tickets, ticket)
@@ -76,7 +83,7 @@ func fetch(cmd *cobra.Command, args []string) (err error) {
 		return nil
 	}
 
-	// run(config.Conf.Core.SelectCmd, issues, os.Stdout)
+	emoji.Println(":white_check_mark: saved ticket list!")
 
 	return nil
 }

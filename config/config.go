@@ -3,8 +3,8 @@ package config
 import (
 	"fmt"
 	"os"
-	"runtime"
 	"path/filepath"
+	"runtime"
 
 	"github.com/BurntSushi/toml"
 )
@@ -14,24 +14,20 @@ var Conf Config
 type Config struct {
 	Core CoreConfig
 	Jira JiraConfig
-	Github GithubConfig
 }
 
 type CoreConfig struct {
-	Editor string `toml:"editor"`
+	Editor      string `toml:"editor"`
 	TicketCache string `toml:"ticketcache"`
-	SelectCmd string `toml:"selectcmd"`
+	SelectCmd   string `toml:"selectcmd"`
+	baseBranch  string `toml:"basebranch"`
 }
 
 type JiraConfig struct {
-	Host string `toml:"host"`
+	Host     string `toml:"host"`
 	UserName string `toml:"username"`
 	Password string `toml:"password"`
-	Jql string `toml:"jql"`
-}
-
-type GithubConfig struct {
-	Template string `toml:"template"`
+	Jql      string `toml:"jql"`
 }
 
 func (conf *Config) Load(file string) error {
@@ -70,7 +66,6 @@ func (conf *Config) Load(file string) error {
 
 	return toml.NewEncoder(f).Encode(conf)
 }
-
 
 func GetDefaultConfigDir() (dir string, err error) {
 	if runtime.GOOS == "windows" {
