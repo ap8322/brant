@@ -21,11 +21,15 @@
 package cmd
 
 import (
+	"bufio"
+	"bytes"
+	"fmt"
 	"os"
 	"strings"
 
 	"github.com/ap8322/brant/config"
 	"github.com/ap8322/brant/ticket"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -39,6 +43,7 @@ var createCmd = &cobra.Command{
 
 func create(cmd *cobra.Command, args []string) error {
 	var tickets ticket.Tickets
+	sep := " : "
 
 	if err := tickets.Load(); err != nil {
 		return err
@@ -47,10 +52,36 @@ func create(cmd *cobra.Command, args []string) error {
 	var list string
 
 	for _, t := range tickets.Tickets {
-		list += t.Display + "\n"
+		list += t.ID + sep + t.Title + "\n"
 	}
 
-	if err := run(config.Conf.Core.SelectCmd, strings.NewReader(list), os.Stdout); err != nil {
+	var buf bytes.Buffer
+	if err := run(config.Conf.Core.SelectCmd, strings.NewReader(list), &buf); err != nil {
+		return err
+	}
+
+	line := buf.String()
+
+	fmt.Print(line)
+
+	selectedId := strings.Split(line, sep)[0]
+
+	if len(args) != 0 {
+		hoge := args[0]
+		fmt.Println(hoge)
+	}
+
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print(color.GreenString("branch name? > "))
+	branch_name, _ := reader.ReadString('\n')
+
+	command := "git checkout -b " + selectedId + "_" + strings.TrimSpace(branch_name)
+
+	if len(args) != 0 {
+		command = command + " " + strings.TrimSpace(args[0])
+	}
+
+	if err := run(command, os.Stdin, os.Stdout); err != nil {
 		return err
 	}
 
