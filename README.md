@@ -65,6 +65,7 @@ $ mkdir -p $GOPATH/src/github.com/ap8322
 $ cd $GOPATH/src/github.com/ap8322
 $ git clone https://github.com/ap8322/brant.git
 $ cd brant
+$ dep ensure # if not install dep, run `go get -u github.com/golang/dep/cmd/dep`
 $ go install
 ```
 
