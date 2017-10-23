@@ -1,4 +1,4 @@
-# brant : Seamless Jira ticket and Github branch
+# brant : Seamless Jira ticket and git branch
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/ap8322/brant/blob/master/LICENSE)
 
 :construction: This tool is under development.
@@ -11,8 +11,6 @@
 # Support
 - Issue tracking tool
     - [x] Jira Cloud
-- Git repository hosting service
-    - [x] Github
 
 # Usage
 ```
