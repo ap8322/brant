@@ -72,8 +72,9 @@ func fetch(cmd *cobra.Command, args []string) (err error) {
 
 	for _, issue := range issues {
 		ticket := ticket.Ticket{
-			ID:    issue.Key,
-			Title: issue.Fields.Summary,
+			ID:          issue.Key,
+			Title:       issue.Fields.Summary,
+			Description: issue.Fields.Description,
 		}
 
 		tikets.Tickets = append(tikets.Tickets, ticket)

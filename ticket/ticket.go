@@ -15,8 +15,9 @@ type Tickets struct {
 }
 
 type Ticket struct {
-	ID    string `toml:"id"`
-	Title string `toml:"title"`
+	ID          string `toml:"id"`
+	Title       string `toml:"title"`
+	Description string `toml:"description"`
 }
 
 // Load reads toml file.

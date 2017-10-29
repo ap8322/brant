@@ -67,6 +67,9 @@ func info(cmd *cobra.Command, args []string) error {
 		link := config.Conf.Jira.Host + "/browse/" + target.ID
 		fmt.Println(target.Title)
 		fmt.Println(link)
+		if len(target.Description) > 0 {
+			fmt.Println(target.Description)
+		}
 	} else {
 		fmt.Println("no ticket linked to the current branch.")
 	}
