@@ -33,7 +33,7 @@ var confCmd = &cobra.Command{
 	RunE:  conf,
 }
 
-func conf(cmd *cobra.Command, args []string) (err error) {
+func conf(cmd *cobra.Command, args []string) error {
 	editor := config.Conf.Core.Editor
 	return editFile(editor, configFile)
 }

@@ -73,7 +73,7 @@ func GetDefaultConfigDir() (dir string, err error) {
 		if dir == "" {
 			dir = filepath.Join(os.Getenv("USERPROFILE"), "Application Data", "brant")
 		}
-		dir = filepath.Join(dir, "pet")
+		dir = filepath.Join(dir, "brant")
 	} else {
 		dir = filepath.Join(os.Getenv("HOME"), ".config", "brant")
 	}

@@ -41,7 +41,7 @@ var fetchCmd = &cobra.Command{
 	RunE:  fetch,
 }
 
-func fetch(cmd *cobra.Command, args []string) (err error) {
+func fetch(cmd *cobra.Command, args []string) error {
 	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
 	s.Suffix = " fetch ticket list..."
 	s.Start()
@@ -81,7 +81,7 @@ func fetch(cmd *cobra.Command, args []string) (err error) {
 	}
 
 	if err := tikets.Save(); err != nil {
-		return nil
+		return err
 	}
 
 	emoji.Println(":white_check_mark: saved ticket list!")
