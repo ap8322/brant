@@ -25,6 +25,7 @@ Available Commands:
   fetch       Fetch ticket list and cache them
   help        Help about any command
   info        Print ticket information linked to the current branch
+  open        Open ticket url you selected
 
 Flags:
   -h, --help   help for brant

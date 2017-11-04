@@ -31,8 +31,8 @@ import (
 // openCmd represents the open command
 var openCmd = &cobra.Command{
 	Use:   "open",
-	Short: "open ticket url you selected",
-	Long: `open ticket url you selected`,
+	Short: "Open ticket url you selected",
+	Long: `Open ticket url you selected`,
 	RunE: open,
 }
 
